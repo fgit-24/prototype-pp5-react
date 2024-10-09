@@ -1,14 +1,40 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useHistory } from "react-router-dom";
 
 import styles from "../../styles/SignInUpForm.module.css";
 import btnStyles from "../../styles/Button.module.css";
 import appStyles from "../../styles/App.module.css";
 
-import { Form, Button, Image, Col, Row, Container } from "react-bootstrap";
 import loginImage from "../../assets/login.jpg";
 
+import {
+  Form,
+  Button,
+  Image,
+  Col,
+  Row,
+  Container,
+  Alert,
+} from "react-bootstrap";
+import axios from "axios";
+
+
 const SignUpForm = () => {
+
+  const[signUpData, setSignUpData] = useState({
+    username: '',
+    password1: '',
+    password2: '',
+  })
+  const { username, password1, password2 } = signUpData;
+
+  const handleChange = (event) => {
+    setSignUpData({
+      ...signUpData,
+      [event.target.name]: event.target.value,
+    })
+  }
+
   return (
     <Row className={styles.Row}>
       {/* Image on the Left */}
@@ -32,17 +58,17 @@ const SignUpForm = () => {
           <Form>
             <Form.Group controlId="username">
               <Form.Label className="d-none" >username</Form.Label>
-              <Form.Control className={styles.Input} type="text" placeholder="Enter your username" name="username"/>
+              <Form.Control className={styles.Input} type="text" placeholder="Enter your username" name="username" value={username} onChange={handleChange}/>
             </Form.Group>
 
             <Form.Group controlId="password1">
               <Form.Label className="d-none">password1</Form.Label>
-              <Form.Control className={styles.Input} type="password" placeholder="Enter your Password" name="password1" />
+              <Form.Control className={styles.Input} type="password" placeholder="Enter your Password" name="password1"  value={password1} onChange={handleChange}/>
             </Form.Group>
 
             <Form.Group controlId="password2">
               <Form.Label className="d-none">password2</Form.Label>
-              <Form.Control className={styles.Input} type="password" placeholder="Confirm your Password" name="password2" />
+              <Form.Control className={styles.Input} type="password" placeholder="Confirm your Password" name="password2" value={password2} onChange={handleChange}/>
             </Form.Group>
 
             <div className="d-flex justify-content-between align-items-center">
