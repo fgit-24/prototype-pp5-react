@@ -3,7 +3,7 @@ import { Link, useHistory } from "react-router-dom";
 
 import styles from "../../styles/SignInUpForm.module.css";
 import btnStyles from "../../styles/Button.module.css";
-import appStyles from "../../styles/App.module.css";
+import appStyles from "../../App.module.css";
 
 import loginImage from "../../assets/login.jpg";
 
@@ -20,11 +20,13 @@ import axios from "axios";
 
 const SignUpForm = () => {
   const [signUpData, setSignUpData] = useState({
-    username: '',
-    password1: '',
-    password2: '',
+    username: "",
+    password1: "",
+    password2: "",
   });
   const { username, password1, password2 } = signUpData;
+
+  const [errors, setErrors] = useState({});
 
   const history = useHistory();
 
@@ -35,13 +37,11 @@ const SignUpForm = () => {
     });
   };
 
-  const [errors, setErrors] = useState({});
-
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      await axios.post('/dj-rest-auth/registration/', signUpData);
-      history.push('/signin');
+      await axios.post("/dj-rest-auth/registration/", signUpData);
+      history.push("/signin");
     } catch (err) {
       setErrors(err.response?.data);
     }
@@ -73,7 +73,7 @@ const SignUpForm = () => {
               <Form.Control
                 className={styles.Input}
                 type="text"
-                placeholder="Enter your username"
+                placeholder="Username"
                 name="username"
                 value={username}
                 onChange={handleChange}
@@ -86,35 +86,35 @@ const SignUpForm = () => {
             ))}
 
             <Form.Group controlId="password1">
-              <Form.Label className="d-none">password1</Form.Label>
+              <Form.Label className="d-none">Password</Form.Label>
               <Form.Control
                 className={styles.Input}
                 type="password"
-                placeholder="Enter your Password"
+                placeholder="Password"
                 name="password1"
                 value={password1}
                 onChange={handleChange}
               />
             </Form.Group>
             {errors.password1?.map((message, idx) => (
-              <Alert variant="warning" key={idx}>
+              <Alert key={idx} variant="warning">
                 {message}
               </Alert>
             ))}
 
             <Form.Group controlId="password2">
-              <Form.Label className="d-none">password2</Form.Label>
+              <Form.Label className="d-none">Confirm password</Form.Label>
               <Form.Control
                 className={styles.Input}
                 type="password"
-                placeholder="Confirm your Password"
+                placeholder="Confirm password"
                 name="password2"
                 value={password2}
                 onChange={handleChange}
               />
             </Form.Group>
             {errors.password2?.map((message, idx) => (
-              <Alert variant="warning" key={idx}>
+              <Alert key={idx} variant="warning">
                 {message}
               </Alert>
             ))}
@@ -130,6 +130,11 @@ const SignUpForm = () => {
                 Sign up
               </Button>
             </div>
+            {errors.non_field_errors?.map((message, idx) => (
+              <Alert key={idx} variant="warning" className="mt-3">
+                {message}
+              </Alert>
+            ))}
           </Form>
         </Container>
 
